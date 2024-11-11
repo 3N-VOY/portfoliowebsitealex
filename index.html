@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xagoraris Alexander Portfolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .clip-circle {
+        clip-path: circle(70% at 50% 50%);
+      }
+
+      /* Gradient Text with Standard Background-Clip for Compatibility */
+      .text-gradient {
+        background: linear-gradient(90deg, #7f5af0, #2cb67d);
+        background-clip: text; /* Standard property */
+        -webkit-background-clip: text; /* For WebKit browsers */
+        -webkit-text-fill-color: transparent; /* Makes text transparent for WebKit */
+        color: transparent; /* For browsers supporting standard background-clip */
+      }
+
+      /* Gradient Button */
+      .gradient-button {
+        background: linear-gradient(90deg, #7f5af0, #2cb67d);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 9999px;
+        font-weight: medium;
+        transition: background 0.3s;
+        text-align: center;
+      }
+
+      .gradient-button:hover {
+        background: linear-gradient(90deg, #2cb67d, #7f5af0);
+      }
+
+      /* Profile Picture */
+      .profile-pic {
+        width: 300px; /* Increased from 200px */
+        height: 300px; /* Increased from 200px */
+        border-radius: 50%;
+        border: 4px solid rgba(127, 90, 240, 0.5);
+        box-shadow: 0 0 20px rgba(127, 90, 240, 0.3);
+        position: relative;
+        z-index: 10;
+      }
+
+      /* Circular Background Elements */
+      .circle-bg {
+        position: absolute;
+        border-radius: 100%;
+        background: radial-gradient(
+          circle,
+          rgba(127, 90, 240, 0.4),
+          rgba(127, 90, 240, 0)
+        ); /* Softer radial gradient */
+        z-index: 5;
+      }
+
+      /* Adjust circle sizes and positions to match the style in the reference image */
+      .large-circle {
+        width: 350px; /* Increased from 250px */
+        height: 350px; /* Increased from 250px */
+        top: -20px; /* Adjusted position to fit new profile size */
+        right: -80px; /* Adjusted position to fit new profile size */
+        filter: blur(15px);
+      }
+
+      .small-circle {
+        width: 200px; /* Increased from 100px */
+        height: 200px; /* Increased from 100px */
+        bottom: 0px; /* Adjusted position to fit new profile size */
+        right: 10px; /* Adjusted position to fit new profile size */
+        filter: blur(15px);
+      }
+
+      /*rings*/
+
+      /* *, *::before, *::after {
+    padding: 0;
+    margin: 0 auto;
+    box-sizing: border-box;
+} */
+
+      /* body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  perspective: 600px;
+  overflow: hidden;
+  background-image: radial-gradient(circle, #123, #000 30em);
+} */
+
+      *:not(:empty) {
+        transform-style: preserve-3d;
+      }
+
+      .scene {
+        position: relative;
+      }
+
+      /* .ball {
+  position: absolute;
+  inset: -8em;
+  background-image: radial-gradient(circle at top, #fff, #000);
+  border-radius: 50%;
+  box-shadow: 0 0 2em #000a;
+} */
+
+      .ring {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(
+          -50%,
+          -50%
+        ); /* Center the ring on the profile picture */
+        width: 300px; /* Adjust width and height to fit around the profile picture */
+        height: 300px;
+        display: flex;
+        /* justify-content: center; */
+        /* align-items: center; */
+        border: 1px solid hsl(var(--hue), 100%, 75%);
+        border-radius: 50%;
+        animation: iMove 24s var(--delay) infinite both linear,
+          iScale 24s var(--delay) infinite both
+            cubic-bezier(0.3642, 0, 0.6358, 1);
+        z-index: 4; /* Lower than the profile-pic */
+      }
+
+      /* position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid hsl(var(--hue), 100%, 75%);
+  box-shadow:
+    0 0 1em hsl(var(--hue), 100%, 75%) inset,
+    0 0 1em hsl(var(--hue), 100%, 75%);
+  animation:
+    iMove 24s var(--delay) infinite both linear,
+    iScale 24s var(--delay) infinite both cubic-bezier(.3642, 0, .6358, 1);
+} */
+
+      .ring i {
+        position: absolute;
+        border: 1px solid hsl(var(--hue), 100%, 75%);
+        box-shadow: 0 0 1em hsl(var(--hue), 100%, 75%) inset,
+          0 0 1em hsl(var(--hue), 100%, 75%);
+        border-radius: 50%;
+        animation: iMove 24s var(--delay) infinite both linear,
+          iScale 24s var(--delay) infinite both
+            cubic-bezier(0.3642, 0, 0.6358, 1);
+        z-index: 3; /* Ensure each element is behind the profile-pic */
+      }
+
+      /* Defining each ring item individually, emulating the @for loop from SCSS */
+      .ring i:nth-child(1) {
+        --delay: 0s;
+        --hue: 0;
+        --rx: 10deg;
+        --ry: 20deg;
+        --rz: 30deg;
+      }
+      .ring i:nth-child(2) {
+        --delay: -0.75s;
+        --hue: 98;
+        --rx: 40deg;
+        --ry: 30deg;
+        --rz: 120deg;
+      }
+      .ring i:nth-child(3) {
+        --delay: -1.5s;
+        --hue: 196;
+        --rx: 70deg;
+        --ry: 50deg;
+        --rz: 220deg;
+      }
+      .ring i:nth-child(4) {
+        --delay: -2.25s;
+        --hue: 294;
+        --rx: 100deg;
+        --ry: 120deg;
+        --rz: 330deg;
+      }
+      .ring i:nth-child(5) {
+        --delay: -3s;
+        --hue: 392;
+        --rx: 130deg;
+        --ry: 210deg;
+        --rz: 30deg;
+      }
+      .ring i:nth-child(6) {
+        --delay: -3.75s;
+        --hue: 490;
+        --rx: 160deg;
+        --ry: 280deg;
+        --rz: 120deg;
+      }
+      .ring i:nth-child(7) {
+        --delay: -4.5s;
+        --hue: 588;
+        --rx: 190deg;
+        --ry: 350deg;
+        --rz: 210deg;
+      }
+      .ring i:nth-child(8) {
+        --delay: -5.25s;
+        --hue: 686;
+        --rx: 220deg;
+        --ry: 40deg;
+        --rz: 300deg;
+      }
+      .ring i:nth-child(9) {
+        --delay: -6s;
+        --hue: 784;
+        --rx: 250deg;
+        --ry: 90deg;
+        --rz: 30deg;
+      }
+      .ring i:nth-child(10) {
+        --delay: -6.75s;
+        --hue: 882;
+        --rx: 280deg;
+        --ry: 130deg;
+        --rz: 90deg;
+      }
+      /* Repeat similar blocks for each child up to the 32nd child as needed */
+
+      @keyframes iMove {
+        /* 0% {
+    transform: rotateZ(var(--rz)) rotateY(var(--ry)) rotateX(var(--rx)) translateZ(50em);
+  }
+  100% {
+    transform: rotateZ(var(--rz)) rotateY(var(--ry)) rotateX(var(--rx)) translateZ(-50em);
+  } */
+
+        0% {
+          transform: rotateZ(var(--rz)) rotateY(var(--ry)) rotateX(var(--rx))
+            translateZ(50em); /* Start farther out */
+        }
+        70% {
+          transform: rotateZ(calc(var(--rz) + 10deg))
+            rotateY(calc(var(--ry) + 10deg)) rotateX(calc(var(--rx) + 10deg))
+            translateZ(10em); /* Approach center, but not too close */
+        }
+        100% {
+          transform: rotateZ(calc(var(--rz) + 20deg))
+            rotateY(calc(var(--ry) + 20deg)) rotateX(calc(var(--rx) + 20deg))
+            translateZ(-60em); /* Exit without getting too close */
+        }
+      }
+
+      @keyframes iScale {
+        0%,
+        100% {
+          inset: -1em;
+          opacity: 0;
+        }
+        20%,
+        50% {
+          inset: -5em;
+          opacity: 0.3; /* Slightly reduced opacity */
+        }
+        70% {
+          inset: -10em;
+          opacity: 0.1; /* Lower opacity as they get closer */
+        }
+        100% {
+          inset: -10em;
+          opacity: 0;
+        }
+      }
+      /* Container to center and adjust the profile image */
+      /* .profile-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+
+      /* Outer Gradient Border */
+      .gradient-border {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px; /* Border thickness */
+        border-radius: 50%;
+        /* background: linear-gradient(135deg, #8e44ad, #3498db); Gradient colors */
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4); /* Subtle shadow */
+        transition: transform 0.3s ease; /* Smooth hover effect */
+      }
+
+      .gradient-border:hover {
+        transform: scale(1.05); /* Slightly enlarges on hover */
+      }
+
+      /* Inner Container for the Profile Image */
+      /* .profile-image-container {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #8e44ad, #3498db); /* Background gradient */
+
+      /* Profile Image */
+
+      /* Responsive adjustments */
+      /* @media (min-width: 768px) {
+  .profile-image-container {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .profile-image-container {
+    width: 250px;
+    height: 250px;
+  }
+} */
+
+    </style>
+  </head>
+  <body class="bg-gray-900 text-white">
+    <!-- Common Navigation -->
+    <nav
+      class="flex justify-between items-center p-6 absolute top-0 left-0 right-0 z-50"
+    >
+      <div class="flex items-center">
+        <!-- <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="11" stroke="white" stroke-width="2"/>
+                <path d="M7 12L10 15L17 8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg> -->
+        <span class="font-bold text-xl">Alexander</span>
+      </div>
+      <div class="hidden md:flex space-x-6">
+        <a href="#" class="hover:text-blue-400 transition duration-300">Home</a>
+        <a href="#" class="hover:text-blue-400 transition duration-300"
+          >About me</a
+        >
+        <a href="#" class="hover:text-blue-400 transition duration-300"
+          >Projects</a
+        >
+        <a href="#" class="hover:text-blue-400 transition duration-300">Blog</a>
+      </div>
+    </nav>
+
+    <section
+      class="min-h-screen flex flex-col md:flex-row items-center justify-between p-6 md:p-12 relative overflow-hidden"
+    >
+    
+      <!-- Left Side Content (Text) -->
+      <div class="md:w-1/2 z-10 mb-12 md:mb-0">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+          Hello, I'm <span class="text-gradient">Alexander Xagoraris</span>
+        </h1>
+        <p class="text-xl text-gray-300 mb-8 max-w-xl">
+          Former digital-marketing specialist, seeking to apply my development
+          skills with a focus on collaboration, communication, and passion.
+        </p>
+        <div
+          class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4"
+        >
+          <a href="#" class="gradient-button">Download CV</a>
+        </div>
+      </div>
+
+      <!-- Right Side Content (Profile Image) -->
+
+      <div class="scene relative md:w-2/4 flex justify-center">
+        <div class="">
+          <!-- <div class="ball"></div> -->
+          <div class="ring flex">
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+          </div>
+          <div class="relative">
+            <img
+              src="/main.jpg"
+              alt="Alexander Xagoraris"
+              class="profile-pic"
+            />
+            <!-- Circle Backgrounds -->
+            <div class="circle-bg large-circle"></div>
+            <div class="circle-bg small-circle"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hero 1: Side-by-Side Layout -->
+    <!-- <section
+      class="min-h-screen flex flex-col md:flex-row items-center justify-center p-6 md:p-12 relative overflow-hidden"
+    >
+      <div class="md:w-1/2 z-10 mb-12 md:mb-0">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+          Alexander <span class="text-blue-500">Xagoraris</span>
+        </h1>
+        <p class="text-xl text-gray-300 mb-8 max-w-xl">
+          Hello and welcome to my software development portfolio! I am thrilled
+          to showcase my passion for crafting captivating and functional
+          websites
+        </p>
+        <div
+          class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4"
+        >
+          <a
+            href="#"
+            class="bg-blue-600 text-white px-8 py-4 rounded-full font-medium hover:bg-blue-700 transition duration-300 text-center"
+          >
+            Let's talk
+          </a>
+          <a
+            href="#"
+            class="bg-transparent border border-blue-400 text-blue-400 px-8 py-4 rounded-full font-medium hover:bg-blue-400 hover:text-white transition duration-300 text-center"
+          >
+            sample button
+          </a>
+        </div>
+      </div>
+      <div class="md:w-1/2 z-10">
+        <img
+          src="/api/placeholder/600/400"
+          alt="Futuristic Dashboard"
+          class="rounded-lg shadow-2xl transform hover:scale-105 transition duration-500 mx-auto"
+        />
+      </div>
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-gray-900 opacity-50"
+      ></div>
+      <div
+        class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjMDAwMDAwMDUiPjwvcmVjdD4KPHBhdGggZD0iTTAgNUw1IDBaTTYgNEw0IDZaTS0xIDFMMSAtMVoiIHN0cm9rZT0iIzIwMjAyMDEwIiBzdHJva2Utd2lkdGg9IjEiPjwvcGF0aD4KPC9zdmc+')] opacity-20"
+      ></div>
+    </section> -->
+
+    <!-- Hero 2: Top-to-Bottom Layout with Floating Elements -->
+    <section
+      class="min-h-screen flex flex-col items-center justify-center p-6 md:p-12 relative overflow-hidden"
+    >
+    <!-- <div class="card">
+        <div class="card-body"> -->
+         
+      <div
+        class="flex flex-col md:flex-row items-center md:items-start max-w-5xl w-full space-y-8 md:space-y-0 md:space-x-12 z-10"
+      >
+        <!-- Left Side: Circular Image -->
+        <div class="profile-container">
+          <div class="gradient-border">
+            <div class="flex-shrink-0">
+              <div
+                class="w-150 h-150 md:w-100 md:h-100 lg:w-96 lg:h-96 bg-gradient-to-b from-purple-600 to-blue-600 rounded-full overflow-hidden shadow-lg"
+              >
+                <img
+                  src="/developer.jpg"
+                  alt="Profile Image"
+                  class="object-cover w-full h-full"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: About Me Content -->
+
+   
+          
+         
+              <div class="text-white max-w-lg">
+                <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6">
+                  About <span class="text-blue-500">Me</span>
+                </h1>
+                <p class="text-xl text-gray-300 mb-8">
+                  Hello! I'm Alexander, - a creative and driven web developer
+                  with 3 years of experience in the field. I thrive on turning
+                  imaginative ideas into digital realities, constantly seeking
+                  innovative ways to blend design and technology. I possess a
+                  strong foundation in front-end and back-end development, as
+                  well as a keen eye for responsive design and user-centered
+                  interfaces.
+                </p>
+                <div class="flex space-x-4">
+                  <a
+                    href="#"
+                    class="bg-blue-600 text-white px-6 py-3 rounded-full font-medium hover:bg-blue-700 transition duration-300"
+                  >
+                    Contact me
+                  </a>
+                  <a
+                    href="#"
+                    class="bg-transparent border border-white text-white px-6 py-3 rounded-full font-medium hover:bg-white hover:text-gray-900 transition duration-300"
+                  >
+                    Learn More
+                  </a>
+                </div>
+              </div>
+            
+          
+     
+        <!-- BOX CONMT-->
+    </div>
+</div>
+              <!-- "absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 opacity-50" -->
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-blue-900 via-purple-900 to-gray-900 opacity-50"
+      ></div>
+      <div id="particles" class="absolute inset-0"></div>
+    </section>
+
+    <!-- Hero 6: Futuristic Cards -->
+    <section
+      class="min-h-screen flex items-center justify-center relative overflow-hidden p-6"
+    >       
+      <div    
+        class="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 opacity-90"
+      ></div>
+      <div class="container mx-auto relative z-10">
+        <h1
+          class="text-4xl md:text-6xl font-bold mb-12 text-center leading-tight"
+        >
+          Specialize in a
+          <span
+            class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
+            >Range of Skills</span
+          >
+        </h1>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div
+            class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-2xl p-8 transform hover:scale-105 transition duration-300"
+          >
+            <h3 class="text-2xl font-bold mb-4 text-blue-400">
+              Front-end Development
+            </h3>
+            <p class="text-gray-300 mb-4">
+              Specialize in HTML, CSS, Javascript, React
+            </p>
+            <a href="#" class="text-blue-400 hover:underline">Learn more →</a>
+          </div>
+          <div
+            class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-2xl p-8 transform hover:scale-105 transition duration-300"
+          >
+            <h3 class="text-2xl font-bold mb-4 text-purple-400">
+              Back-end Development
+            </h3>
+            <p class="text-gray-300 mb-4">
+              Specializing in Python, Django, Rest API Framework, Flask
+            </p>
+            <a href="#" class="text-purple-400 hover:underline">Learn more →</a>
+          </div>
+          <div
+            class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-2xl p-8 transform hover:scale-105 transition duration-300"
+          >
+            <h3 class="text-2xl font-bold mb-4 text-pink-400">
+              Responsive Design
+            </h3>
+            <p class="text-gray-300 mb-4">
+              Create Visually appealing and functional websites across devices.
+            </p>
+            <a href="#" class="text-pink-400 hover:underline">Learn more →</a>
+          </div>
+          <div
+            class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-2xl p-8 transform hover:scale-105 transition duration-300"
+          >
+            <h3 class="text-2xl font-bold mb-4 text-pink-400">
+              Web Scraping - Scripting Testing
+            </h3>
+            <p class="text-gray-300 mb-4">
+              Experience with Python selenium, Javascript Puppeteer and Cherio.
+            </p>
+            <a href="#" class="text-pink-400 hover:underline">Learn more →</a>
+          </div>
+          <div
+            class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-2xl p-8 transform hover:scale-105 transition duration-300"
+          >
+            <h3 class="text-2xl font-bold mb-4 text-pink-400">
+              Mobile App Development
+            </h3>
+            <p class="text-gray-300 mb-4">
+              Experience with React Native Developing Cross Platform - Mobile
+              Applications
+            </p>
+            <a href="#" class="text-pink-400 hover:underline">Learn more →</a>
+          </div>
+          <div
+            class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-2xl p-8 transform hover:scale-105 transition duration-300"
+          >
+            <h3 class="text-2xl font-bold mb-4 text-pink-400">
+              AI Integration
+            </h3>
+            <p class="text-gray-300 mb-4">
+              Experience with: AI and Machine Learning Libraries including
+              Langchain, Google's Mediapipe, Opencv, and Numpy. Chatgpt API
+              integration into existing web apps
+            </p>
+            <a href="#" class="text-pink-400 hover:underline">Learn more →</a>
+          </div>
+        </div>
+        <div class="text-center mt-12">
+          <a
+            href="#"
+            class="bg-white text-gray-900 px-8 py-4 rounded-full font-medium hover:bg-gray-200 transition duration-300 inline-block"
+          >
+            Get Started Today
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hero 3: Asymmetrical Layout with Interactive Element -->
+    <section
+      class="min-h-screen flex flex-col md:flex-row items-center justify-center p-6 md:p-12 relative overflow-hidden"
+    >
+      <div class="md:w-2/5 z-10 mb-12 md:mb-0">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+          Empower Your <span class="text-blue-500">Global Workforce</span>
+        </h1>
+        <p class="text-xl text-gray-300 mb-8">
+          Harness the power of AI and automation to streamline your
+          international operations.
+        </p>
+        <a
+          href="#"
+          class="bg-blue-600 text-white px-8 py-4 rounded-full font-medium hover:bg-blue-700 transition duration-300 inline-block"
+        >
+          Transform Your Business
+        </a>
+      </div>
+      <div class="md:w-3/5 z-10 relative">
+        <div
+          class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-2xl p-8 shadow-2xl"
+        >
+          <h3 class="text-2xl font-bold mb-4">Explore Our Solutions</h3>
+          <div class="grid grid-cols-2 gap-4" id="solution-grid">
+            <button
+              class="bg-blue-500 bg-opacity-20 hover:bg-opacity-30 text-blue-300 px-4 py-3 rounded-lg transition duration-300"
+              data-solution="hr"
+            >
+              HR Management
+            </button>
+            <button
+              class="bg-purple-500 bg-opacity-20 hover:bg-opacity-30 text-purple-300 px-4 py-3 rounded-lg transition duration-300"
+              data-solution="payroll"
+            >
+              Global Payroll
+            </button>
+            <button
+              class="bg-green-500 bg-opacity-20 hover:bg-opacity-30 text-green-300 px-4 py-3 rounded-lg transition duration-300"
+              data-solution="compliance"
+            >
+              Compliance
+            </button>
+            <button
+              class="bg-yellow-500 bg-opacity-20 hover:bg-opacity-30 text-yellow-300 px-4 py-3 rounded-lg transition duration-300"
+              data-solution="talent"
+            >
+              Talent Acquisition
+            </button>
+          </div>
+          <div id="solution-content" class="mt-6 text-gray-300">
+            Click on a solution to learn more.
+          </div>
+        </div>
+      </div>
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 opacity-50"
+      ></div>
+      <div
+        class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjMDAwMDAwMDUiPjwvcmVjdD4KPHBhdGggZD0iTTAgNUw1IDBaTTYgNEw0IDZaTS0xIDFMMSAtMVoiIHN0cm9rZT0iIzIwMjAyMDEwIiBzdHJva2Utd2lkdGg9IjEiPjwvcGF0aD4KPC9zdmc+')] opacity-10"
+      ></div>
+    </section>
+
+   <!-- Hero 4: Circular Reveal with Parallax -->
+<section
+class="min-h-screen flex items-center justify-center relative overflow-hidden"
+>
+<div
+  class="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-gray-900"
+></div>
+<div
+  class="clip-circle absolute inset-0 bg-gradient-to-tr from-blue-600 via-purple-600 to-pink-600"
+  id="reveal-circle"
+></div>
+<div class="container mx-auto px-6 relative z-10">
+  <div class="text-center">
+    <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight text-white">
+      Projects
+    </h1>
+    <p class="text-xl text-gray-300 mb-12">
+      Here are some of my recent projects. Click on any to learn more!
+    </p>
+    
+    <!-- Project Cards Container -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <!-- Card 1 -->
+      <div class="col">
+        <div class="card h-100 bg-dark text-white border-0 shadow-lg">
+          <img class="card-img-top" src="project1.jpg" alt="Project 1">
+          <div class="card-body">
+            <h5 class="card-title">Photographer Website Showcase</h5>
+            <p class="card-text">
+              Tech Stack: PHP,SQL,HTML,CSS, Javascript using Wordpress
+            </p>
+            <a target="_blank" href="https://lumephotography.com/" class="btn btn-primary">View Project</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col">
+        <div class="card h-100 bg-dark text-white border-0 shadow-lg">
+          <img class="card-img-top" src="project2.jpg" alt="Project 2">
+          <div class="card-body">
+            <h5 class="card-title">Real Estate Company Site</h5>
+            <p class="card-text">
+              Tech Stack: PHP,SQL,HTML,CSS, Javascript using Wordpress
+            </p>
+            <a target="_blank" href="https://www.freeholdprop.com/" class="btn btn-primary">View Project</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="col">
+        <div class="card h-100 bg-dark text-white border-0 shadow-lg">
+          <img class="card-img-top" src="project3.jpg" alt="Project 3">
+          <div class="card-body">
+            <h5 class="card-title">Construction Company Website</h5>
+            <p class="card-text">
+              Tech Stack: PHP, SQL, HTML, CSS, Javascript using Wordpress
+            </p>
+            <a target="_blank" href="https://www.hitt.com/" class="btn btn-primary">View Project</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="col">
+        <div class="card h-100 bg-dark text-white border-0 shadow-lg">
+          <img class="card-img-top" src="project4.jpg" alt="Project 4">
+          <div class="card-body">
+            <h5 class="card-title">Python Local AI Assistant Custom LLM</h5>
+            <p class="card-text">
+              Local AI voice assistant that utilizes speech recognition and text generation techniques. It enables users to interact with the assistant through voice commands.
+            </p>
+            <a target="_blank" href="https://github.com/3N-VOY/local_ai_voice_assistant" class="btn btn-primary">View Project</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="col">
+        <div class="card h-100 bg-dark text-white border-0 shadow-lg">
+          <img class="card-img-top" src="project5.jpg" alt="Project 5">
+          <div class="card-body">
+            <h5 class="card-title">Ecommerce Store</h5>
+            <p class="card-text">
+              Fully functional e-commerce store using Django Framework.
+            </p>
+            <a target="_blank" href="https://github.com/3N-VOY/Virscape_ecommerce_Django" class="btn btn-primary">View Project</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="col">
+        <div class="card h-100 bg-dark text-white border-0 shadow-lg">
+          <img class="card-img-top" src="project6.jpg" alt="Project 6">
+          <div class="card-body">
+            <h5 class="card-title">Single Landing Page "Mac Tech"</h5>
+            <p class="card-text">
+              Single Page Website Design using Django Backend and Css js Bootstrap for frontend optimized for mobile usage
+            </p>
+            <a target="_blank" href="https://github.com/3N-VOY/mac-tech" class="btn btn-primary">View Project</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <a
+      href="https://github.com/3N-VOY/mac-tech"
+      class="bg-white text-gray-900 px-8 py-4 rounded-full font-medium hover:bg-gray-200 transition duration-300 inline-block mt-8"
+    >
+      Experience the Future
+    </a>
+  </div>
+</div>
+
+<!-- Background Image with Parallax Effect -->
+<div
+  class="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 opacity-90"
+  id="parallax-container"
+>
+
+</div>
+</section>
+
+
+    <!-- Hero 5: Interactive Globe -->
+    <section
+      class="min-h-screen flex items-center justify-center relative overflow-hidden"
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900"
+      ></div>
+      <div
+        class="container mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center"
+      >
+        <div class="md:w-1/2 mb-12 md:mb-0">
+          <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            Get in<span class="text-blue-400">Touch</span>
+          </h1>
+          <p class="text-xl text-gray-300 mb-8">
+            Seamlessly manage teams across continents with ACME's innovative
+            global management platform.
+          </p>
+          <a
+            href="#"
+            class="bg-blue-600 text-white px-8 py-4 rounded-full font-medium hover:bg-blue-700 transition duration-300 inline-block"
+          >
+            Explore Solutions
+          </a>
+
+          <div
+            class="hidden md:flex md:flex-col md:items-center md:w-1/6 text-white space-y-6 z-10"
+          >
+            <!-- Quick Links or Profile Summary -->
+            <div
+              class="p-4 border border-blue-500 rounded-md bg-gradient-to-br from-gray-800 to-blue-800"
+            >
+              <h3 class="font-semibold text-lg text-blue-400">About Me</h3>
+              <p class="text-gray-300 mt-2">
+                Full-stack developer with a passion for creating dynamic web
+                experiences.
+              </p>
+            </div>
+
+            <!-- Skills List -->
+            <div
+              class="p-4 border border-blue-500 rounded-md bg-gradient-to-br from-gray-800 to-blue-800"
+            >
+              <h3 class="font-semibold text-lg text-blue-400">Skills</h3>
+              <ul class="text-gray-300 mt-2 space-y-1">
+                <li>JavaScript</li>
+                <li>React</li>
+                <li>Node.js</li>
+                <li>Python</li>
+              </ul>
+            </div>
+
+            <!-- Social Media Links -->
+            <div class="flex space-x-4">
+              <a
+                href="#"
+                class="text-blue-500 hover:text-blue-400 transition duration-300"
+              >
+                <!-- FontAwesome icons could be used here -->
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                  ...
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="text-blue-500 hover:text-blue-400 transition duration-300"
+              >
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                  ...
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="text-blue-500 hover:text-blue-400 transition duration-300"
+              >
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                  ...
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="md:w-1/2 flex justify-center">
+          <div class="relative w-64 h-64 md:w-96 md:h-96" id="globe-container">
+            <!-- Globe will be inserted here by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Hero 2: Particle animation
+      const particlesContainer = document.getElementById("particles");
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement("div");
+        particle.className = "absolute bg-blue-500 rounded-full opacity-50";
+        particle.style.width = "4px";
+        particle.style.height = "4px";
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        particlesContainer.appendChild(particle);
+
+        gsap.to(particle, {
+          y: `random(-100, 100)`,
+          x: `random(-100, 100)`,
+          opacity: 0,
+          duration: `random(3, 5)`,
+          repeat: -1,
+          yoyo: true,
+          ease: "power1.inOut",
+        });
+      }
+
+      // Hero 3: Interactive solution grid
+      const solutionGrid = document.getElementById("solution-grid");
+      const solutionContent = document.getElementById("solution-content");
+      const solutions = {
+        hr: "Our AI-powered HR Management system streamlines recruitment, onboarding, and employee development across global teams.",
+        payroll:
+          "Simplify international payments with our Global Payroll solution, ensuring compliance and timely compensation for your worldwide workforce.",
+        compliance:
+          "Stay ahead of regulatory changes with our real-time Compliance tools, covering labor laws and tax regulations in over 100 countries.",
+        talent:
+          "Leverage our advanced Talent Acquisition platform to find and hire the best global talent, breaking down geographical barriers.",
+      };
+
+      solutionGrid.addEventListener("click", (e) => {
+        if (e.target.dataset.solution) {
+          solutionContent.textContent = solutions[e.target.dataset.solution];
+          solutionContent.style.opacity = 0;
+          gsap.to(solutionContent, {
+            opacity: 1,
+            duration: 0.5,
+            ease: "power2.out",
+          });
+        }
+      });
+
+      // Hero 4: Circular Reveal and Parallax
+      const revealCircle = document.getElementById("reveal-circle");
+      const parallaxBg = document.getElementById("parallax-bg");
+      const parallaxContainer = document.getElementById("parallax-container");
+
+      gsap.to(revealCircle, {
+        scale: 20,
+        duration: 1.5,
+        ease: "power2.inOut",
+      });
+
+      parallaxContainer.addEventListener("mousemove", (e) => {
+        const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+        const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+        gsap.to(parallaxBg, {
+          x: xAxis,
+          y: yAxis,
+          duration: 0.5,
+        });
+      });
+
+      // Hero 5: Interactive Globe
+      const globeContainer = document.getElementById("globe-container");
+      const globeSize = globeContainer.offsetWidth;
+      const numDots = 200;
+
+      for (let i = 0; i < numDots; i++) {
+        const dot = document.createElement("div");
+        dot.className = "absolute w-1 h-1 bg-blue-400 rounded-full";
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(Math.random() * 2 - 1);
+        const x =
+          (globeSize / 2) * Math.sin(phi) * Math.cos(theta) + globeSize / 2;
+        const y =
+          (globeSize / 2) * Math.sin(phi) * Math.sin(theta) + globeSize / 2;
+        const z = (globeSize / 2) * Math.cos(phi);
+        dot.style.left = `${x}px`;
+        dot.style.top = `${y}px`;
+        dot.style.transform = `translateZ(${z}px)`;
+        globeContainer.appendChild(dot);
+      }
+
+      globeContainer.addEventListener("mousemove", (e) => {
+        const rect = globeContainer.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const rotateY = -((e.clientX - centerX) / rect.width) * 30;
+        const rotateX = ((e.clientY - centerY) / rect.height) * 30;
+        gsap.to(globeContainer, {
+          rotationY: rotateY,
+          rotationX: rotateX,
+          duration: 0.5,
+          ease: "power2.out",
+        });
+      });
+
+      // Hero 6: Futuristic Cards hover effect
+      const cards = document.querySelectorAll(".bg-gray-800");
+      cards.forEach((card) => {
+        card.addEventListener("mouseenter", () => {
+          gsap.to(card, {
+            y: -10,
+            boxShadow:
+              "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+            duration: 0.3,
+          });
+        });
+        card.addEventListener("mouseleave", () => {
+          gsap.to(card, {
+            y: 0,
+            boxShadow: "none",
+            duration: 0.3,
+          });
+        });
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
+</html>
